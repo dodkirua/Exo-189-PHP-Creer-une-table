@@ -60,8 +60,55 @@
  */
 
 // TODO Votre code ici.
+$server = "127.0.0.1";
+$db = "";
+$user = "dev";
+$pass = "dev";
 
+//create database
 try {
-    ...
+    $maConnexion = new PDO ("mysql:host=$server;dbname=$db;charset=utf8", $user, $pass);
+    $maConnexion->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+    $request = "CREATE DATABASE table_test_php";
+    $maConnexion->exec($request);
+
+    echo "La base de données table_test_php a bien été créée.<br>";
+
+    $table1 = "
+        CREATE TABLE table_test_php.utilisateur (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            nom VARCHAR(50) NOT NULL,
+            prenom VARCHAR(50) NOT NULL,
+            email VARCHAR(100) NOT NULL,
+            password VARCHAR(100) NOT NULL,
+            adresse VARCHAR(200) NOT NULL,
+            code_postal VARCHAR(15) NOT NULL,
+            pays VARCHAR(30) NOT NULL,
+            date_join DATETIME DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE (email)
+        )
+    ";
+    $maConnexion->exec($table1);
+    echo "Table utilisateur créée avec succés<br>";
+
+
+    $table2 = "
+        CREATE TABLE table_test_php.produit (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            titre VARCHAR(50) NOT NULL,
+            prix FlOAT NOT NULL,
+            description_courte VARCHAR(255),
+            description_longue TEXT               
+        )  
+    ";
+
+    $maConnexion->exec($table2);
+    echo "Table produit créée avec succés <br>";
+
+
+
+
 }
-catch...
+catch (PDOException $exception) {
+    echo $exception->getMessage();
+}
